@@ -91,6 +91,8 @@ namespace FusionHelper
 
         private bool StatusDirty { get; set; } = false;
 
+        private bool _initializedNetworkHandler = false;
+
         private void Awake()
         {
             Screen.fullScreenMode = FullScreenMode.Windowed;
@@ -98,13 +100,26 @@ namespace FusionHelper
 
             Instance = this;
 
-            SteamHandler.CheckSteamRunning();
+            bool running = SteamHandler.CheckSteamRunning();
+
+            if (!running)
+            {
+                _initializedNetworkHandler = false;
+                return;
+            }
 
             NetworkHandler.Init();
+
+            _initializedNetworkHandler = true;
         }
 
         private void Update()
         {
+            if (!_initializedNetworkHandler)
+            {
+                return;
+            }
+
             NetworkHandler.PollEvents();
             SteamHandler.Tick();
         }

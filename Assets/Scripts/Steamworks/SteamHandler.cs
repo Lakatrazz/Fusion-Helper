@@ -1,11 +1,15 @@
 ﻿using FusionHelper.Network;
+
 using LiteNetLib.Utils;
-using System.Runtime.InteropServices;
+
 using Steamworks;
-using System.Security.Cryptography;
-using System.Linq;
+
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Diagnostics;
+
+using Debug = UnityEngine.Debug;
 
 namespace FusionHelper.Steamworks
 {
@@ -34,7 +38,7 @@ namespace FusionHelper.Steamworks
                 Shutdown();
             }
 
-            Console.WriteLine($"Initializing Steamworks with appid {appId}.");
+            Debug.Log($"Initializing Steamworks with appid {appId}.");
 
 #if !PLATFORM_MAC
             try
@@ -44,7 +48,7 @@ namespace FusionHelper.Steamworks
             }
             catch
             {
-                Console.WriteLine("Failed to write the Steam app id to disk, defaulting to SteamVR. Please make sure your in-game settings match with this.");
+                Debug.Log("Failed to write the Steam app id to disk, defaulting to SteamVR. Please make sure your in-game settings match with this.");
             }
 #endif
 
@@ -60,7 +64,7 @@ namespace FusionHelper.Steamworks
             }
             catch (Exception e)
             {
-                Console.WriteLine("Failed to initialize Steamworks! \n" + e);
+                Debug.Log("Failed to initialize Steamworks! \n" + e);
             }
 
             AwaitLobbyCreation();
@@ -70,7 +74,7 @@ namespace FusionHelper.Steamworks
         {
             if (IsInited)
             {
-                Console.WriteLine("Shutting down Steamworks instance.");
+                Debug.Log("Shutting down Steamworks instance.");
 
                 SteamAPI.Shutdown();
                 IsInited = false;
@@ -91,7 +95,7 @@ namespace FusionHelper.Steamworks
             }
             catch (Exception e)
             {
-                Console.WriteLine("Failed when receiving data on Socket and Connection: {0}", e);
+                Debug.Log($"Failed when receiving data on Socket and Connection: {e}");
             }
         }
 
@@ -153,7 +157,7 @@ namespace FusionHelper.Steamworks
         {
             if (_localLobby == null)
             {
-                Console.WriteLine("Attempting to update null lobby.");
+                Debug.Log("Attempting to update null lobby.");
                 return;
             }
 
@@ -162,11 +166,31 @@ namespace FusionHelper.Steamworks
 
         public static bool CheckSteamRunning()
         {
-            var procs = System.Diagnostics.Process.GetProcesses();
-            bool running = procs.Any(p => p.ProcessName == "steam" || p.ProcessName == "steam_osx");
+            var processes = Process.GetProcesses();
+            bool running = false;
+
+            foreach (var process in processes)
+            {
+                try
+                {
+                    var name = process.ProcessName;
+
+                    if (name == "steam" || name == "steam_osx")
+                    {
+                        running = true;
+                        break;
+                    }
+                }
+                catch { }
+            }
 
             if (!running)
-                Console.WriteLine("\x1b[91mSteam does not seem to be running, you may need to launch it and restart FusionHelper.\x1b[0m");
+            {
+                var warningText = "Steam does not seem to be running, you may need to launch it and restart FusionHelper.";
+
+                HelperManager.Instance.FirewallNoteText = warningText;
+                Debug.Log(warningText);
+            }
 
             return running;
         }
