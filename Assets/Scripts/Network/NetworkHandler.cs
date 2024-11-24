@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
@@ -74,6 +75,8 @@ namespace FusionHelper.Network
                     writer.Put("YOU_FOUND_ME");
                     Server.SendUnconnectedMessage(writer, endPoint);
                     _hasBeenDiscovered = true;
+
+                    HelperManager.Instance.StartCoroutine(TimeoutDiscovery());
                 }
             };
 
@@ -92,6 +95,27 @@ namespace FusionHelper.Network
 
             Debug.Log("Be sure to allow FusionHelper to receive and send information if/when the firewall asks.");
 #endif
+        }
+
+        private static IEnumerator TimeoutDiscovery()
+        {
+            float elapsed = 0f;
+
+            while (elapsed < 10f && ClientConnection == null)
+            {
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            if (ClientConnection == null)
+            {
+                HelperManager.Instance.QuestStatusText = "Quest Timed Out";
+                HelperManager.Instance.QuestStatusColor = Color.red;
+
+                Debug.Log("Timed out connecting to the client.");
+
+                _hasBeenDiscovered = false;
+            }
         }
 
         private static int ReadPort()
