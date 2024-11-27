@@ -9,13 +9,6 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/cache@v4
-        with:
-          path: Library
-          key: Library-Fusion-Helper-StandaloneOSX
-          restore-keys: |
-            Library-Fusion-Helper-
-            Library-
       - uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
