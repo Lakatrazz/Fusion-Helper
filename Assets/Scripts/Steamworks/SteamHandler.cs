@@ -175,7 +175,7 @@ namespace FusionHelper.Steamworks
                 {
                     var name = process.ProcessName;
 
-                    if (name == "steam" || name == "steam_osx")
+                    if (name.Contains("steam"))
                     {
                         running = true;
                         break;
