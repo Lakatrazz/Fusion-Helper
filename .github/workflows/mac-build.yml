@@ -25,4 +25,4 @@ jobs:
           targetPlatform: StandaloneOSX
       - uses: softprops/action-gh-release@v2
         with:
-          files: build
+          files: work/Fusion-Helper/Fusion-Helper
