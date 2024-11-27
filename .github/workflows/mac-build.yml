@@ -23,6 +23,7 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: StandaloneOSX
+      - run: zip -r FusionHelper_Mac.zip work/Fusion-Helper/Fusion-Helper
       - uses: softprops/action-gh-release@v2
         with:
-          files: work/Fusion-Helper/Fusion-Helper
+          files: FusionHelper_Mac.zip
