@@ -74,14 +74,25 @@ namespace FusionHelper.Steamworks
 
         public void Receive(int bufferSize = 32)
         {
-            int processed = 0;
             IntPtr[] messageBuffer = new IntPtr[bufferSize];
 
-            processed = SteamNetworkingSockets.ReceiveMessagesOnPollGroup(PollGroup, messageBuffer, bufferSize);
+            int processed = SteamNetworkingSockets.ReceiveMessagesOnPollGroup(PollGroup, messageBuffer, bufferSize);
 
-            for (int i = 0; i < processed; i++)
+            int size = Marshal.SizeOf(typeof(IntPtr)) * messageBuffer.Length;
+            IntPtr ptr = Marshal.AllocHGlobal(size);
+
+            Marshal.Copy(messageBuffer, 0, ptr, messageBuffer.Length);
+
+            try
             {
-                ReceiveMessage(Marshal.ReadIntPtr(messageBuffer, i * IntPtr.Size));
+                for (int i = 0; i < processed; i++)
+                {
+                    ReceiveMessage(Marshal.ReadIntPtr(ptr, i * IntPtr.Size));
+                }
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(ptr);
             }
 
             //
