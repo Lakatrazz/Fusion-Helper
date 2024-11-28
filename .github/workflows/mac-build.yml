@@ -1,0 +1,22 @@
+name: Mac Build
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: StandaloneOSX
+      - run: zip -r FusionHelper_Mac.app.zip build/StandaloneOSX/StandaloneOSX.app
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: FusionHelper_Mac.zip
