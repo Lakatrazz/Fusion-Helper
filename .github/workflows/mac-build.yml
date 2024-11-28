@@ -19,4 +19,4 @@ jobs:
       - run: zip -r FusionHelper_Mac.app.zip build/StandaloneOSX/StandaloneOSX.app
       - uses: softprops/action-gh-release@v2
         with:
-          files: FusionHelper_Mac.zip
+          files: FusionHelper_Mac.app.zip
