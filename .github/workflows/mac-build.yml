@@ -16,7 +16,11 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: StandaloneOSX
-      - run: zip -r FusionHelper_Mac.app.zip build/StandaloneOSX/StandaloneOSX.app
+      - run: |
+          cd build/StandaloneOSX
+          mv StandaloneOSX.app "Fusion Helper.app"
+          zip -r FusionHelper_Mac.zip "Fusion Helper.app"
       - uses: softprops/action-gh-release@v2
         with:
-          files: FusionHelper_Mac.app.zip
+          files: build/StandaloneOSX/FusionHelper_Mac.zip
+          fail_on_unmatched_files: true
