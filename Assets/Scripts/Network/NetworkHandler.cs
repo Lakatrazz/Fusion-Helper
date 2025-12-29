@@ -150,7 +150,7 @@ namespace FusionHelper.Network
             // Lobby code or default privacy check
             if (parameters.LobbyCode != null)
             {
-                SteamMatchmaking.AddRequestLobbyListStringFilter(LobbyKeys.LobbyCodeKey, parameters.LobbyCode, ELobbyComparison.k_ELobbyComparisonEqual);
+                SteamMatchmaking.AddRequestLobbyListStringFilter(LobbyKeys.LobbyCodeKey, parameters.LobbyCode.ToUpper(), ELobbyComparison.k_ELobbyComparisonEqual);
             }
             else
             {
