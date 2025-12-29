@@ -316,8 +316,12 @@
 "Assets/Scripts/Extensions/String.cs"
 "Assets/Scripts/HelperConstants.cs"
 "Assets/Scripts/HelperManager.cs"
+"Assets/Scripts/Network/LobbyKeys.cs"
+"Assets/Scripts/Network/MatchmakerFilters.cs"
 "Assets/Scripts/Network/MessageTypes.cs"
 "Assets/Scripts/Network/NetworkHandler.cs"
+"Assets/Scripts/Network/ProxyLobbyRequestParameters.cs"
+"Assets/Scripts/Network/ServerPrivacy.cs"
 "Assets/Scripts/Steamworks.NET/autogen/isteamapplist.cs"
 "Assets/Scripts/Steamworks.NET/autogen/isteamapps.cs"
 "Assets/Scripts/Steamworks.NET/autogen/isteamclient.cs"
@@ -426,6 +430,7 @@
 "Assets/Scripts/Steamworks/SteamConnectionManager.cs"
 "Assets/Scripts/Steamworks/SteamHandler.cs"
 "Assets/Scripts/Steamworks/SteamSocketManager.cs"
+"Assets/Scripts/VersionText.cs"
 -langversion:9.0
 /unsafe+
 /deterministic

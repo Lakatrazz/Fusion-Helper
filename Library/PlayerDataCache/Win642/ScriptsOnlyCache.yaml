@@ -2,6 +2,7 @@ ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
     - FusionHelper.HelperManager
+    - FusionHelper.VersionText
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
     Unity.TextMeshPro:
@@ -73,29 +74,31 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 21886}
+      Script: {instanceID: 21918}
     - Class: 114
-      Script: {instanceID: 22170}
+      Script: {instanceID: 22202}
     - Class: 114
-      Script: {instanceID: 22250}
+      Script: {instanceID: 22282}
     - Class: 114
-      Script: {instanceID: 22706}
+      Script: {instanceID: 22738}
     - Class: 114
-      Script: {instanceID: 22898}
+      Script: {instanceID: 22930}
     - Class: 114
-      Script: {instanceID: 23022}
+      Script: {instanceID: 23054}
     - Class: 114
-      Script: {instanceID: 23280}
+      Script: {instanceID: 23312}
     - Class: 114
-      Script: {instanceID: 23458}
+      Script: {instanceID: 23490}
     - Class: 114
-      Script: {instanceID: 23988}
+      Script: {instanceID: 24022}
     - Class: 114
-      Script: {instanceID: 24096}
+      Script: {instanceID: 24130}
     - Class: 114
-      Script: {instanceID: 24152}
+      Script: {instanceID: 24186}
     - Class: 114
-      Script: {instanceID: 24262}
+      Script: {instanceID: 24296}
+    - Class: 114
+      Script: {instanceID: 25896}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -539,8 +542,14 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI
     namespaceName: UnityEngine.EventSystems
     className: EventTrigger
+  - hash:
+      serializedVersion: 2
+      Hash: 4abd70d3070e48376aab68a38f65e687
+    assemblyName: Assembly-CSharp
+    namespaceName: FusionHelper
+    className: VersionText
   platform: 19
   scenePathNames:
   - Assets/Scenes/Main Menu.unity
-  playerPath: D:/Development/Programs/BONELAB/Fusion-Helper/Builds/Windows/FusionHelper_Windows/Fusion
+  playerPath: D:/Development/Programs/BONELAB/Fusion-Helper/Builds/Windows/Fusion
     Helper.exe
