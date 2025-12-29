@@ -389,6 +389,7 @@
 "Assets/Scripts/Extensions/String.cs"
 "Assets/Scripts/HelperConstants.cs"
 "Assets/Scripts/HelperManager.cs"
+"Assets/Scripts/Network/LobbyKeys.cs"
 "Assets/Scripts/Network/MessageTypes.cs"
 "Assets/Scripts/Network/NetworkHandler.cs"
 "Assets/Scripts/Steamworks.NET/autogen/isteamapplist.cs"

@@ -144,7 +144,8 @@ namespace FusionHelper.Network
             SteamMatchmaking.AddRequestLobbyListDistanceFilter(ELobbyDistanceFilter.k_ELobbyDistanceFilterWorldwide);
             SteamMatchmaking.AddRequestLobbyListFilterSlotsAvailable(int.MaxValue);
             SteamMatchmaking.AddRequestLobbyListResultCountFilter(int.MaxValue);
-            SteamMatchmaking.AddRequestLobbyListStringFilter("BONELAB_FUSION_HasServerOpen", bool.TrueString, ELobbyComparison.k_ELobbyComparisonEqual);
+            SteamMatchmaking.AddRequestLobbyListStringFilter(LobbyKeys.IdentifierKey, bool.TrueString, ELobbyComparison.k_ELobbyComparisonEqual);
+            SteamMatchmaking.AddRequestLobbyListStringFilter(LobbyKeys.HasLobbyOpenKey, bool.TrueString, ELobbyComparison.k_ELobbyComparisonEqual);
 
             var task = SteamMatchmaking.RequestLobbyList();
 
@@ -205,7 +206,7 @@ namespace FusionHelper.Network
             writer.Put(lobbyId);
 
             // Key collection, contains an array of all keys in the metadata
-            string[] keyCollection =  SteamMatchmaking.GetLobbyData(lobby, "BONELAB_FUSION_KeyCollection").Expand();
+            string[] keyCollection =  SteamMatchmaking.GetLobbyData(lobby, LobbyKeys.KeyCollectionKey).Expand();
 
             // Array length
             writer.Put(keyCollection.Length);
