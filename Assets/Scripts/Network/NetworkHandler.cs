@@ -270,7 +270,7 @@ namespace FusionHelper.Network
 
                         SendType sendType = id == (ulong)MessageTypes.ReliableBroadcastToClients ? SendType.Reliable : SendType.Unreliable;
 
-                        foreach (var connection in SteamHandler.SocketManager.ConnectedSteamIds)
+                        foreach (var connection in SteamHandler.SocketManager.ConnectedSteamIDs)
                         {
                             SteamNetworkingSockets.SendMessageToConnection(connection.Value, intPtrMessage, (uint)sizeOfMessage, (int)sendType, out long _);
                         }
@@ -329,8 +329,8 @@ namespace FusionHelper.Network
                         byte[] message = dataReader.GetBytesWithLength();
                         bool reliable = id != (ulong)MessageTypes.UnreliableSendFromServer;
 
-                        if (SteamHandler.SocketManager.ConnectedSteamIds.ContainsKey(userId))
-                            SteamHandler.SendToClient(SteamHandler.SocketManager.ConnectedSteamIds[userId], message, reliable);
+                        if (SteamHandler.SocketManager.ConnectedSteamIDs.ContainsKey(userId))
+                            SteamHandler.SendToClient(SteamHandler.SocketManager.ConnectedSteamIDs[userId], message, reliable);
                         else if (userId == SteamUser.GetSteamID().m_SteamID)
                             SteamHandler.SendToClient(SteamHandler.ConnectionManager.Connection, message, reliable);
 

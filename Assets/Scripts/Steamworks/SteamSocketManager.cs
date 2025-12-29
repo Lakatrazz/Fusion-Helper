@@ -10,7 +10,7 @@ namespace FusionHelper.Steamworks
 {
     public class SteamSocketManager
     {
-        public Dictionary<ulong, HSteamNetConnection> ConnectedSteamIds = new();
+        public Dictionary<ulong, HSteamNetConnection> ConnectedSteamIDs = new();
         public HSteamListenSocket Socket;
 
         public HSteamNetPollGroup PollGroup;
@@ -38,7 +38,7 @@ namespace FusionHelper.Steamworks
             // If we aren't in the connected list yet, this is likely us
             var steamId = SteamUser.GetSteamID().m_SteamID;
 
-            if (!ConnectedSteamIds.ContainsKey(steamId))
+            if (!ConnectedSteamIDs.ContainsKey(steamId))
             {
                 InsertConnection(steamId, info.m_hConn);
             }
@@ -46,10 +46,10 @@ namespace FusionHelper.Steamworks
 
         public void OnDisconnected(SteamNetConnectionStatusChangedCallback_t info)
         {
-            var pair = ConnectedSteamIds.FirstOrDefault((p) => p.Value.m_HSteamNetConnection == info.m_hConn.m_HSteamNetConnection);
+            var pair = ConnectedSteamIDs.FirstOrDefault((p) => p.Value.m_HSteamNetConnection == info.m_hConn.m_HSteamNetConnection);
             var longId = pair.Key;
 
-            ConnectedSteamIds.Remove(longId);
+            ConnectedSteamIDs.Remove(longId);
 
             NetDataWriter writer = NetworkHandler.NewWriter(MessageTypes.OnDisconnected);
             writer.Put(longId);
@@ -58,18 +58,23 @@ namespace FusionHelper.Steamworks
 
         public void OnMessage(HSteamNetConnection connection, SteamNetworkingIdentity identity, IntPtr data, int size, long messageNum, long recvTime, int channel)
         {
-            InsertConnection(identity.GetSteamID64(), connection);
+            var platformID = identity.GetSteamID64();
+
+            InsertConnection(platformID, connection);
 
             byte[] message = new byte[size];
             Marshal.Copy(data, message, 0, size);
 
             NetDataWriter writer = NetworkHandler.NewWriter(MessageTypes.OnMessage);
+
             writer.PutBytesWithLength(message);
+            writer.Put(platformID);
+
             NetworkHandler.SendToClient(writer);
         }
 
-        public void InsertConnection(ulong steamId, HSteamNetConnection connection) {
-            ConnectedSteamIds[steamId] = connection;
+        public void InsertConnection(ulong steamID, HSteamNetConnection connection) {
+            ConnectedSteamIDs[steamID] = connection;
         }
 
         public void Receive(int bufferSize = 32)

@@ -83,20 +83,23 @@ namespace FusionHelper.Steamworks
                 Receive(bufferSize);
         }
 
-        public void OnMessage(IntPtr data, int size, long messageNum, long recvTime, int channel)
+        public void OnMessage(IntPtr data, int size, long messageNum, long recvTime, int channel, ulong steamID)
         {
             byte[] message = new byte[size];
             Marshal.Copy(data, message, 0, size);
 
             NetDataWriter writer = NetworkHandler.NewWriter(MessageTypes.OnConnectionMessage);
+
             writer.PutBytesWithLength(message);
+            writer.Put(steamID);
+
             NetworkHandler.SendToClient(writer);
         }
 
         internal unsafe void ReceiveMessage(IntPtr msgPtr)
         {
             var msg = Marshal.PtrToStructure<NetMsg>(msgPtr);
-            OnMessage(msg.DataPtr, msg.DataSize, msg.RecvTime, msg.MessageNumber, msg.Channel);
+            OnMessage(msg.DataPtr, msg.DataSize, msg.RecvTime, msg.MessageNumber, msg.Channel, msg.Identity.GetSteamID64());
         }
     }
 
