@@ -499,6 +499,7 @@
 "Assets/Scripts/Steamworks/SteamConnectionManager.cs"
 "Assets/Scripts/Steamworks/SteamHandler.cs"
 "Assets/Scripts/Steamworks/SteamSocketManager.cs"
+"Assets/Scripts/VersionText.cs"
 -langversion:9.0
 /unsafe+
 /deterministic
