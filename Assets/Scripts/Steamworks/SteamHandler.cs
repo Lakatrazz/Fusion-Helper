@@ -198,7 +198,9 @@ namespace FusionHelper.Steamworks
         public static void KillConnection()
         {
             if (ConnectionManager != null)
+            {
                 SteamNetworkingSockets.CloseConnection(ConnectionManager.Connection, (int)ESteamNetConnectionEnd.k_ESteamNetConnectionEnd_App_Generic, "Connection killed by FusionHelper", false);
+            }
 
             if (SocketManager != null)
             {
@@ -207,6 +209,14 @@ namespace FusionHelper.Steamworks
 
 
             IsServer = false;
+        }
+
+        public static void KillUserConnection(ulong steamID)
+        {
+            if (SocketManager != null && SocketManager.ConnectedSteamIDs.TryGetValue(steamID, out var connection))
+            {
+                SteamNetworkingSockets.CloseConnection(connection, (int)ESteamNetConnectionEnd.k_ESteamNetConnectionEnd_App_Generic, "Connection killed by FusionHelper", false);
+            }
         }
     }
 }

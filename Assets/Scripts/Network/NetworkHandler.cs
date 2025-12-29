@@ -139,7 +139,7 @@ namespace FusionHelper.Network
             return HelperConstants.DEFAULT_PORT;
         }
 
-        private static async Task<CSteamID[]> FetchLobbies()
+        private static async Task<CSteamID[]> FetchLobbies(ProxyLobbyRequestParameters parameters)
         {
             SteamMatchmaking.AddRequestLobbyListDistanceFilter(ELobbyDistanceFilter.k_ELobbyDistanceFilterWorldwide);
             SteamMatchmaking.AddRequestLobbyListFilterSlotsAvailable(int.MaxValue);
@@ -147,6 +147,30 @@ namespace FusionHelper.Network
             SteamMatchmaking.AddRequestLobbyListStringFilter(LobbyKeys.IdentifierKey, bool.TrueString, ELobbyComparison.k_ELobbyComparisonEqual);
             SteamMatchmaking.AddRequestLobbyListStringFilter(LobbyKeys.HasLobbyOpenKey, bool.TrueString, ELobbyComparison.k_ELobbyComparisonEqual);
 
+            // Lobby code or default privacy check
+            if (parameters.LobbyCode != null)
+            {
+                SteamMatchmaking.AddRequestLobbyListStringFilter(LobbyKeys.LobbyCodeKey, parameters.LobbyCode, ELobbyComparison.k_ELobbyComparisonEqual);
+            }
+            else
+            {
+                SteamMatchmaking.AddRequestLobbyListNumericalFilter(LobbyKeys.PrivacyKey, (int)ServerPrivacy.PRIVATE, ELobbyComparison.k_ELobbyComparisonNotEqual);
+                SteamMatchmaking.AddRequestLobbyListNumericalFilter(LobbyKeys.PrivacyKey, (int)ServerPrivacy.LOCKED, ELobbyComparison.k_ELobbyComparisonNotEqual);
+            }
+
+            // Optional filters
+            if (parameters.Filters.FilterFull)
+            {
+                SteamMatchmaking.AddRequestLobbyListStringFilter(LobbyKeys.FullKey, bool.FalseString, ELobbyComparison.k_ELobbyComparisonEqual);
+            }
+
+            if (parameters.Filters.FilterMismatchingVersions)
+            {
+                SteamMatchmaking.AddRequestLobbyListNumericalFilter(LobbyKeys.VersionMajorKey, parameters.VersionMajor, ELobbyComparison.k_ELobbyComparisonEqual);
+                SteamMatchmaking.AddRequestLobbyListNumericalFilter(LobbyKeys.VersionMinorKey, parameters.VersionMinor, ELobbyComparison.k_ELobbyComparisonEqual);
+            }
+
+            // Request lobbies
             var task = SteamMatchmaking.RequestLobbyList();
 
             CSteamID[] lobbyIdList = null;
@@ -174,9 +198,10 @@ namespace FusionHelper.Network
             return lobbyIdList;
         }
 
-        private static async void RespondWithLobbyIds()
+        private static async void RespondWithLobbyIDs(ProxyLobbyRequestParameters parameters)
         {
-            CSteamID[] lobbies = await FetchLobbies();
+            CSteamID[] lobbies = await FetchLobbies(parameters);
+
             if (lobbies == null)
             {
                 Debug.Log("Failed to fetch lobbies! Make sure your Steam client is connected to their servers and restart FusionHelper. If that doesn't solve it, Steam's servers may be down right now.");
@@ -184,7 +209,7 @@ namespace FusionHelper.Network
             }
 
             NetDataWriter writer = new();
-            writer.Put((byte)MessageTypes.LobbyIds);
+            writer.Put((byte)MessageTypes.LobbyIDs);
             writer.Put((uint)lobbies.Length);
             
             foreach (CSteamID l in lobbies)
@@ -350,8 +375,10 @@ namespace FusionHelper.Network
                 case (ulong)MessageTypes.Disconnect:
                     SteamHandler.KillConnection();
                     break;
-                case (ulong)MessageTypes.LobbyIds:
-                    RespondWithLobbyIds();
+                case (ulong)MessageTypes.LobbyIDs:
+                    var parameters = ProxyLobbyRequestParameters.Read(dataReader);
+
+                    RespondWithLobbyIDs(parameters);
                     break;
                 case (ulong)MessageTypes.LobbyMetadata:
                     RespondWithLobbyMetadata(dataReader.GetULong());
@@ -374,6 +401,11 @@ namespace FusionHelper.Network
                         SendToClient(writer);
                         break;
                     }
+                case (ulong)MessageTypes.DisconnectUser:
+                    ulong platformID = dataReader.GetULong();
+
+                    SteamHandler.KillUserConnection(platformID);
+                    break;
             }
 
             dataReader.Recycle();

@@ -18,10 +18,12 @@
         StartServer = 13,
         UnreliableSendFromServer = 14,
         ReliableSendFromServer = 15,
-        LobbyIds = 16,
+        LobbyIDs = 16,
         LobbyMetadata = 17,
 
         SetLobbyMetadata = 20,
         SteamFriends = 21,
+
+        DisconnectUser = 22,
     }
 }
