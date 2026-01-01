@@ -2,6 +2,7 @@ ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
     - FusionHelper.HelperManager
+    - FusionHelper.VersionText
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
     Unity.TextMeshPro:
@@ -73,29 +74,31 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 21886}
+      Script: {instanceID: 21930}
     - Class: 114
-      Script: {instanceID: 22170}
+      Script: {instanceID: 22214}
     - Class: 114
-      Script: {instanceID: 22250}
+      Script: {instanceID: 22264}
     - Class: 114
-      Script: {instanceID: 22706}
+      Script: {instanceID: 22298}
     - Class: 114
-      Script: {instanceID: 22898}
+      Script: {instanceID: 22754}
     - Class: 114
-      Script: {instanceID: 23022}
+      Script: {instanceID: 22946}
     - Class: 114
-      Script: {instanceID: 23280}
+      Script: {instanceID: 23070}
     - Class: 114
-      Script: {instanceID: 23458}
+      Script: {instanceID: 23330}
     - Class: 114
-      Script: {instanceID: 23988}
+      Script: {instanceID: 23508}
     - Class: 114
-      Script: {instanceID: 24096}
+      Script: {instanceID: 24040}
     - Class: 114
-      Script: {instanceID: 24152}
+      Script: {instanceID: 24148}
     - Class: 114
-      Script: {instanceID: 24262}
+      Script: {instanceID: 24204}
+    - Class: 114
+      Script: {instanceID: 24314}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -179,6 +182,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI
     namespaceName: UnityEngine.EventSystems
     className: BaseInput
+  - hash:
+      serializedVersion: 2
+      Hash: 4abd70d3070e48376aab68a38f65e687
+    assemblyName: Assembly-CSharp
+    namespaceName: FusionHelper
+    className: VersionText
   - hash:
       serializedVersion: 2
       Hash: e7e95903ca66d58e1a7cbd71f824e16d

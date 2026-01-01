@@ -3127,6 +3127,7 @@
     "forceIncludeModules": [],
     "forceExcludeModules": [
         "AMD",
+        "AR",
         "AndroidJNI",
         "NVIDIA",
         "Physics2D",
